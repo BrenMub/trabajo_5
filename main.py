@@ -7,7 +7,7 @@ app = FastAPI(
     version="0.0.1"
 )
 
-list_users = [["zam", "be"]]
+list_users = [["zam", "be", "125a"]]
 
 @app.post("/api/v1/register/")
 async def register_user(username: str, email: str, password: str):
@@ -23,16 +23,33 @@ async def register_user(username: str, email: str, password: str):
                 status_code=status.HTTP_409_CONFLICT
             )
 
-    list_users.append([username, email])
-    print("prueba")
+    id_user = str(uuid.uuid4())
+    list_users.append([username, email, id_user])
     return {
             "username": username,
             'email': email,
-            "id": str(uuid.uuid4()),
+            "id": id_user,
             "message": "The user was created successfully",
             "status": 200
             }
 
+@app.get("/api/v1/user/{id}/")
+async def get_user_data(id_user):
+    for sublist in list_users:
+        print(list_users)
+        print(sublist[2])
+        if sublist[2] == id_user:
+            print("sss")
+            return {
+                "username": sublist[0],
+                'email': sublist[1],
+                "id": id_user,
+                "status": 200
+            }
+    return JSONResponse(
+        content="This user id does not exist",
+        status_code=status.HTTP_404_NOT_FOUND
+    )
 
 
 
