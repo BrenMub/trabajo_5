@@ -36,10 +36,7 @@ async def register_user(username: str, email: str, password: str):
 @app.get("/api/v1/user/{id}/")
 async def get_user_data(id_user):
     for sublist in list_users:
-        print(list_users)
-        print(sublist[2])
         if sublist[2] == id_user:
-            print("sss")
             return {
                 "username": sublist[0],
                 'email': sublist[1],
